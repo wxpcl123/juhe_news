@@ -1,16 +1,28 @@
-# juhe_news
-
-A new Flutter project.
+# 聚合新闻客户端
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Flutter学习之作.
 
-A few resources to get you started if this is your first Flutter project:
+聚合新闻头条接口来源:   [https://www.juhe.cn/docs/api/id/235];
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+接口地址：[http://v.juhe.cn/toutiao/index]
+返回格式：json
+请求方式：get/post
+请求示例：[http://v.juhe.cn/toutiao/index?type=top&key=APPKEY]
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+APPKEY: 申请时给出的AppKey
+type:   新闻类型, 如下
+        top(头条，默认),
+        shehui(社会),
+        guonei(国内),
+        guoji(国际),
+        yule(娱乐),
+        tiyu(体育),
+        junshi(军事),
+        keji(科技),
+        caijing(财经),
+        shishang(时尚)
+
+## 
+
