@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page_widget.dart';
 
 void main() => runApp(MaterialApp(
-      title: '聚合新问头条',
+      title: '聚合新闻头条',
       theme: ThemeData(primarySwatch: Colors.red),
       home: HomePageWidget(),
     ));

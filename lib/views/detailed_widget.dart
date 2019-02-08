@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
 import '../modal/news.dart';
 import '../constants.dart';
 
@@ -37,7 +39,7 @@ class _DetailedWidgetState extends State<DetailedWidget> {
   void initState() {
     data = widget.data;
 
-    // 监听url地址改变事件, 点击其它任何链接都直接回退
+    // 禁止外链: 监听url地址改变事件, 点击其它任何链接都直接回退
     onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
       if (data.url != url) {
         flutterWebViewPlugin.stopLoading();
@@ -75,12 +77,19 @@ class _DetailedWidgetState extends State<DetailedWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //透明状态栏
+    if (Platform.isAndroid) {
+      SystemUiOverlayStyle systemUiOverlayStyle =
+          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    }
     String title = data.title.length > 18
         ? data.title.substring(0, 16) + '...'
         : data.title;
     return WebviewScaffold(
       appBar: AppBar(title: Text(title, style: AppStyles.appBarTitle)),
       url: data.url,
+      // 不要让javaScript运行, 太多垃圾广告
       withJavascript: false,
       withLocalStorage: true,
       withZoom: false,
