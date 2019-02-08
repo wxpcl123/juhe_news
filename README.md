@@ -26,11 +26,11 @@ type:   新闻类型, 如下
         shishang(时尚)
 ```
 ## Json格式
->
+
 每次发起get请求, 返回30条新闻数据, 格式如下, 注意其中缩略图[thumbnail_pic]有三种形式, 分别是
-有1张:  [thumbnail_pic_s],
-有2张:  [thumbnail_pic_s],[thumbnail_pic_s02],
-有3张:  [thumbnail_pic_s],[thumbnail_pic_s02],[thumbnail_pic_s03]
+>有1张:  [thumbnail_pic_s],
+>有2张:  [thumbnail_pic_s],[thumbnail_pic_s02],
+>有3张:  [thumbnail_pic_s],[thumbnail_pic_s02],[thumbnail_pic_s03]
 因此显示新闻列表时可以稍微做点变通, 否则会有些单调, 具体见代码.
 
 ```
