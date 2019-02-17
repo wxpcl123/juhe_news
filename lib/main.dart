@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
+
 import 'home_page_widget.dart';
 
-void main() => runApp(MaterialApp(
-      title: '聚合新闻头条',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: HomePageWidget(),
-    ));
+void main() {
+  //透明状态栏
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+
+  runApp(MaterialApp(
+    title: '聚合新闻头条',
+    theme: ThemeData(primarySwatch: Colors.red),
+    home: HomePageWidget(),
+  ));
+}
 
 //http://v.juhe.cn/toutiao/index?type=top&key=15537be7c12442a398e9663959dbad8c
 

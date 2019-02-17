@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
-import '../modal/news.dart';
-import '../constants.dart';
+import 'dart:async';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-import 'dart:async';
+import '../modal/news.dart';
+import '../constants.dart';
 
 class DetailedWidget extends StatefulWidget {
   final Data data;
   DetailedWidget({this.data});
 
   @override
-  State<StatefulWidget> createState() => new _DetailedWidgetState();
+  State<StatefulWidget> createState() => _DetailedWidgetState();
 }
 
 class _DetailedWidgetState extends State<DetailedWidget> {
@@ -22,18 +20,13 @@ class _DetailedWidgetState extends State<DetailedWidget> {
   /// 标记是否是加载中
   bool loading = true;
 
-  /// 标记当前页面是否是我们自定义的回调页面
-  bool isLoadingCallbackPage = false;
-
-  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
-
   /// 监控url变化, 当在webView显示状态下点击其中的链接时会触发
   StreamSubscription<String> onUrlChanged;
 
   StreamSubscription<WebViewStateChanged> onWebViewStateChanged;
 
   /// 插件提供的对象，该对象用于WebView的各种操作
-  FlutterWebviewPlugin flutterWebViewPlugin = new FlutterWebviewPlugin();
+  FlutterWebviewPlugin flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -48,7 +41,7 @@ class _DetailedWidgetState extends State<DetailedWidget> {
       }
     });
 
-    //
+    //监听webview状态变化
     onWebViewStateChanged =
         flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       switch (state.type) {
@@ -77,12 +70,6 @@ class _DetailedWidgetState extends State<DetailedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //透明状态栏
-    if (Platform.isAndroid) {
-      SystemUiOverlayStyle systemUiOverlayStyle =
-          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-    }
     String title = data.title.length > 18
         ? data.title.substring(0, 16) + '...'
         : data.title;

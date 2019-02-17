@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:flutter/services.dart';
+
 import 'news_widget.dart';
 import 'modal/news_type.dart';
 import 'constants.dart';
@@ -12,14 +11,14 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget>
     with SingleTickerProviderStateMixin {
-  List<NewsType> newsTypes = List<NewsType>();
+  List<NewsType> _newsTypes = List<NewsType>();
 
-  List<NewsWidget> newsWidgets = [];
+  List<NewsWidget> _newsWidgets = [];
   TabController _tabController;
 
   @override
   void initState() {
-    newsTypes = [
+    _newsTypes = [
       const NewsType(type: 'top', description: '头条'),
       const NewsType(type: 'shehui', description: '社会'),
       const NewsType(type: 'guonei', description: '国内'),
@@ -31,22 +30,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
       const NewsType(type: 'caijing', description: '财经'),
       const NewsType(type: 'shishang', description: '时尚'),
     ];
-    _tabController = TabController(length: newsTypes.length, vsync: this);
+    _tabController = TabController(length: _newsTypes.length, vsync: this);
 
-    for (NewsType type in newsTypes) {
-      newsWidgets.add(NewsWidget(newsType: type));
+    for (NewsType type in _newsTypes) {
+      _newsWidgets.add(NewsWidget(newsType: type));
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //透明状态栏
-    if (Platform.isAndroid) {
-      SystemUiOverlayStyle systemUiOverlayStyle =
-          SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-    }
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
@@ -57,7 +50,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
             isScrollable: true,
             controller: _tabController,
             indicatorColor: Colors.white,
-            tabs: newsTypes.map((type) {
+            tabs: _newsTypes.map((type) {
               return Text(type.description, style: AppStyles.tabBarText);
             }).toList(),
           ),
@@ -65,7 +58,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: newsWidgets,
+        children: _newsWidgets,
       ),
     );
   }

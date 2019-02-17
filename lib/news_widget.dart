@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:http/http.dart' as http;
+
 import 'constants.dart';
 import 'modal/news.dart';
 import 'modal/news_type.dart';
 import 'views/news_item_widget.dart';
 import 'modal/pattern.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:math';
 
 class NewsWidget extends StatefulWidget {
   final NewsType newsType;
@@ -46,11 +48,8 @@ class _NewsWidgetState extends State<NewsWidget>
   @override
   void initState() {
     //组合URL
-    url = Constants.baseUrl +
-        'index?type=' +
-        widget.newsType.type +
-        '&key=' +
-        Constants.appKey;
+    url =
+        '${Constants.baseUrl}index?type=${widget.newsType.type}&key=${Constants.appKey}';
     //加载新闻
     _loadNews();
     super.initState();
@@ -58,17 +57,23 @@ class _NewsWidgetState extends State<NewsWidget>
 
   ///新闻列表Widget
   Widget _newsListWidget() {
+    Pattern pattern;
     return ListView.builder(
       itemCount: newsDataList.length,
       itemBuilder: (BuildContext context, int index) {
-        //10%的概率出multiPic,45%的概率图片在左, 45%概率图片在右
-        Pattern pattern = Random(DateTime.now().microsecond).nextInt(10) > 8
-            ? Pattern.MULTI
-            : Random(DateTime.now().microsecond).nextBool()
-                ? Pattern.LEFT
-                : Pattern.RIGHT;
-        if (newsDataList[index].thumbnailPics3 == null &&
-            pattern == Pattern.MULTI) pattern = Pattern.RIGHT;
+        //如果没有第三章缩略图, 则50%的概率图片在左, 50%概率图片在右
+        if (newsDataList[index].thumbnailPics3 == null) {
+          pattern = Random(DateTime.now().microsecond).nextBool()
+              ? Pattern.LEFT
+              : Pattern.RIGHT;
+        } else {
+          //10%的概率出multiPic,45%的概率图片在左, 45%概率图片在右
+          pattern = Random(DateTime.now().microsecond).nextInt(10) > 8
+              ? Pattern.MULTI
+              : Random(DateTime.now().microsecond).nextBool()
+                  ? Pattern.LEFT
+                  : Pattern.RIGHT;
+        }
         return NewsItemWidget(pattern: pattern, data: newsDataList[index]);
       },
     );

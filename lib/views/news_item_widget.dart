@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+
+
 import '../modal/news.dart';
 import '../modal/pattern.dart';
 import '../constants.dart';
 import 'detailed_widget.dart';
-import 'detailed_news_widget.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsItemWidget extends StatelessWidget {
   final Data data;
@@ -14,9 +13,9 @@ class NewsItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _totalWidth = MediaQuery.of(context).size.width;
-    final double itemVerticalMargin = 5.0;
-    final double imageWidth = (_totalWidth - itemVerticalMargin) / 3;
+    final double totalWidth = MediaQuery.of(context).size.width;
+    final double itemMargin = 5.0;
+    final double imageWidth = (totalWidth - itemMargin) / 3;
     final double itemPadding = 10.0;
 
     ///单张图片Widget
@@ -27,27 +26,30 @@ class NewsItemWidget extends StatelessWidget {
           fit: BoxFit.cover);
     }
 
-    ///标题栏
-    Widget _titleWidget(int lineNum) {
+    ///标题栏,@lineNum:标题行的数量
+    Widget titleWidget(int lineNum) {
       return Text(data.title,
           maxLines: lineNum, overflow: TextOverflow.ellipsis);
     }
 
     ///作者和发布日期信息
-    Widget _authorAndDateInfo() {
+    Widget authorAndDateInfo() {
+      String author = data.authorName.length < 12
+          ? data.authorName
+          : '${data.authorName.substring(0, 12)}...';
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(data.authorName, style: AppStyles.newsItemAuthor),
+          Text(author, style: AppStyles.newsItemAuthor),
           Text(data.date, style: AppStyles.newsItemAuthor)
         ],
       );
     }
 
     ///组合标题和作者等信息
-    Widget _titleAndAuthorAsm() {
+    Widget titleAndAuthorAsm() {
       return Container(
-        width: _totalWidth - imageWidth - itemPadding * 2,
+        width: totalWidth - imageWidth - itemPadding * 2,
         height: imageWidth * 3 / 4,
         padding: EdgeInsets.symmetric(horizontal: itemPadding, vertical: 5.0),
         child: Column(
@@ -55,19 +57,19 @@ class NewsItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _titleWidget(2),
-            _authorAndDateInfo(),
+            titleWidget(2),
+            authorAndDateInfo(),
           ],
         ),
       );
     }
 
     ///多图表达
-    Widget _multiPicNewsWidget() {
+    Widget multiPicNewsWidget() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _titleWidget(1),
+          titleWidget(1),
           SizedBox(height: 12.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,23 +80,23 @@ class NewsItemWidget extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.0),
-          _authorAndDateInfo(),
+          authorAndDateInfo(),
         ],
       );
     }
 
-    Widget _patternedWidget(Pattern pattern) {
+    Widget patternedWidget(Pattern pattern) {
       switch (pattern) {
         case Pattern.MULTI:
-          return _multiPicNewsWidget();
+          return multiPicNewsWidget();
         case Pattern.LEFT:
           return Row(children: <Widget>[
             singlePic(1.0, data.thumbnailPicS),
-            _titleAndAuthorAsm()
+            titleAndAuthorAsm()
           ]);
         case Pattern.RIGHT:
           return Row(children: <Widget>[
-            _titleAndAuthorAsm(),
+            titleAndAuthorAsm(),
             singlePic(1.0, data.thumbnailPicS)
           ]);
         default:
@@ -102,7 +104,7 @@ class NewsItemWidget extends StatelessWidget {
       }
     }
 
-    void _loadDetailedNewsWidget(Data data) {
+    void loadDetailedNewsWidget(Data data) {
       // 常用flutterWebViewPlugin实现方法
       Navigator.push(
           context,
@@ -116,17 +118,15 @@ class NewsItemWidget extends StatelessWidget {
       //     }));
     }
 
-
     return GestureDetector(
       onTap: () {
-        //_launchUrl(data);
-        _loadDetailedNewsWidget(data);
+        loadDetailedNewsWidget(data);
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: itemVerticalMargin),
+        margin: EdgeInsets.symmetric(vertical: itemMargin),
         padding: EdgeInsets.all(itemPadding),
         color: Colors.white,
-        child: _patternedWidget(pattern),
+        child: patternedWidget(pattern),
       ),
     );
   }

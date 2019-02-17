@@ -23,12 +23,6 @@ dependencies:
   webview_flutter: ^0.2.0
   flutter_webview_plugin: ^0.3.0+2
 
-  uuid: ^1.0.3
-  mime: ^0.9.6+2
-  # flutter_inappbrowser: ^0.5.51
-
-
-  url_launcher: ^3.0.2
 
 dev_dependencies:
   flutter_test:
